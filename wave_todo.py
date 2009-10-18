@@ -16,6 +16,7 @@ def OnBlipSubmitted(properties, context):
 		doc.InsertText(m.start(), 'I found: "' + m.groups()[0] + '"')
 
 if __name__ == '__main__':
+  logging.getLogger().setLevel(logging.DEBUG)
   todo = robot.Robot('wave-todo', 
       image_url='http://wave-todo.appspot.com/assets/icon.png',
       version='2',
