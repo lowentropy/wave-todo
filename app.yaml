@@ -8,3 +8,6 @@ handlers:
   script: wave_todo.py
 - url: /assets
   static_dir: assets
+- url: /
+  static_files: index.html
+  upload: .*\.html
