@@ -1,5 +1,5 @@
 application: wave-todo
-version: 0.1
+version: 1
 runtime: python
 api_version: 1
 
