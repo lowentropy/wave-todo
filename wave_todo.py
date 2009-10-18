@@ -1,27 +1,24 @@
+import re, logging
+
 from waveapi import events
 from waveapi import model
 from waveapi import robot
 
-def OnParticipantsChanged(properties, context):
-  """Invoked when any participants have been added/removed."""
-  added = properties['participantsAdded']
-  for p in added:
-    Notify(context)
+TODO_RE = re.compile('TODO:[ \t]*([^.!]+)[.!]', re.I)
 
-def OnRobotAdded(properties, context):
-  """Invoked when the robot has been added."""
-  root_wavelet = context.GetRootWavelet()
-  root_wavelet.CreateBlip().GetDocument().SetText("I'm alive!")
-
-def Notify(context):
-  root_wavelet = context.GetRootWavelet()
-  root_wavelet.CreateBlip().GetDocument().SetText("Hi everybody!")
+def OnBlipSubmitted(properties, context):
+	blip = context.GetBlipById(properties['blipId'])
+	doc = blip.GetDocument()
+	text = doc.GetText()
+	logging.debug('blip text: ' + text)
+	for m in TODO_RE.finditer(text):
+		doc.DeleteRange(m.start(), m.end())
+		doc.InsertText(m.start(), 'I found: "' + m.groups()[0] + '"')
 
 if __name__ == '__main__':
-  myRobot = robot.Robot('wave-todo', 
-      image_url='http://wave-todo.appspot.com/icon.png',
-      version='1',
+  todo = robot.Robot('wave-todo', 
+      image_url='http://wave-todo.appspot.com/assets/icon.png',
+      version='2',
       profile_url='http://wave-todo.appspot.com/')
-  myRobot.RegisterHandler(events.WAVELET_PARTICIPANTS_CHANGED, OnParticipantsChanged)
-  myRobot.RegisterHandler(events.WAVELET_SELF_ADDED, OnRobotAdded)
-  myRobot.Run()
+  todo.RegisterHandler(events.BLIP_SUBMITTED, OnBlipSubmitted)
+  todo.Run()
