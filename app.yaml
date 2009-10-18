@@ -1,0 +1,10 @@
+application: wave-todo
+version: 0.1
+runtime: python
+api_version: 1
+
+handlers:
+- url: /_wave/.*
+  script: wave_todo.py
+- url: /assets
+  static_dir: assets
