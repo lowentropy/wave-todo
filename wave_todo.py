@@ -10,9 +10,8 @@ def OnBlipSubmitted(properties, context):
 	blip = context.GetBlipById(properties['blipId'])
 	doc = blip.GetDocument()
 	text = doc.GetText()
-	logging.debug('blip text: ' + text)
 	for m in TODO_RE.finditer(text):
-		doc.DeleteRange(m.start(), m.end())
+		doc.DeleteRange(doc.Range(m.start(), m.end()))
 		doc.InsertText(m.start(), 'I found: "' + m.groups()[0] + '"')
 
 if __name__ == '__main__':
