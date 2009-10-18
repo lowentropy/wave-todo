@@ -1,0 +1,8 @@
+= Google Wave Todo-list Robot
+
+Automatically replaces instances of "todo: ..." with a checkbox
+list that keeps track of task completion and can assign tasks to
+users of the wave.
+
+To use it, simply add the participant wave-todo@appspot.com to
+your wave.
