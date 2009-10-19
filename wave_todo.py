@@ -7,7 +7,7 @@ from waveapi import document
 
 TODO_RE = re.compile('TODO:[ \t]*([^.!]+)[.!]', re.I)
 
-def OnBlipSubmitted(properties, context):
+def OnBlipModified(properties, context):
 	blip = context.GetBlipById(properties['blipId'])
 	doc = blip.GetDocument()
 	text = doc.GetText()
@@ -19,7 +19,7 @@ if __name__ == '__main__':
   logging.getLogger().setLevel(logging.DEBUG)
   todo = robot.Robot('wave-todo', 
       image_url='http://wave-todo.appspot.com/assets/icon.png',
-      version='2',
+      version='3',
       profile_url='http://wave-todo.appspot.com/')
-  todo.RegisterHandler(events.BLIP_SUBMITTED, OnBlipSubmitted)
+  todo.RegisterHandler(events.DOCUMENT_CHANGED, OnBlipModified)
   todo.Run()
